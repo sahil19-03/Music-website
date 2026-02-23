@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Page</title>
+    <link rel="stylesheet" href="spotify.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container">
+    <aside class="sidebar">
+        <h2>Your Library</h2>
+        <div class="playlist-box">
+            <h3>Create your first playlist</h3>
+            <p>It's easy, we'll help you</p>
+            <button>Create playlist</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="main-header">
+            <h1>Music Library</h1>
+            <input type="text" placeholder="What do you want to play?" />
+            <div class="header-buttons">
+                <button>Premium</button>
+                <button>Support</button>
+                <button>Download</button>
+                <button class="login-btn" id="loginBtn">Log in</button>
+            </div>
+        </header>
+
+        <header id="artistHeader">
+            <img id="artistCoverImage" src="default-artist.png" alt="Artist Cover" class="artist-header-image">
+            <h1 id="artistName">Loading Artist...</h1>
+        </header>
+
+        <section class="section">
+                <h2>Songs</h2>
+                <div class="card-row" id="songListContainer">
+                    </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="spotify-footer">
+        <div class="footer-player">
+            <div class="footer-song-info">
+                <img id="footerCover" src="default-cover.png" alt="cover" class="footer-cover">
+                <div>
+                    <h4 id="footerTitle">Song Title</h4>
+                    <p id="footerArtist">Artist Name</p>
+                </div>
+            </div>
+            <div class="footer-controls">
+                <button id="footerPlayPause">▶</button>
+                <input type="range" id="progressSlider" class="progress-slider" value="0" max="100">
+            </div>
+            <div class="footer-volume">
+                <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1">
+            </div>
+        </div>
+        <audio id="audioPlayer" style="display:none;"></audio>
+    </footer>
+    <script src="artist.js"></script>
+</body>
+</html>

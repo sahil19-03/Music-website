@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Music Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #121212, #1DB954, #191414);
+      background-size: 300% 300%;
+      animation: bgMove 12s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* === Rectangular Login Box === */
+    .login-box {
+      position: relative;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 40px 50px;
+      border-radius: 15px;
+      width: 450px; /* wider rectangular shape */
+      max-width: 90%;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 35px rgba(30, 215, 96, 0.8);
+      z-index: 10;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .login-box h1 {
+      font-size: 36px;
+      margin-bottom: 25px;
+      background: linear-gradient(90deg, #1DB954, #00ffcc, #00ff99);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glowText 3s infinite alternate;
+    }
+
+    @keyframes glowText {
+      from { text-shadow: 0 0 10px #1DB954; }
+      to { text-shadow: 0 0 20px #00ffcc; }
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #ddd;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      background: #282828;
+      color: #fff;
+      transition: box-shadow 0.3s, transform 0.2s;
+    }
+
+    .input-group input:focus {
+      box-shadow: 0 0 15px #1DB954;
+      outline: none;
+      transform: scale(1.02);
+    }
+
+    /* === Buttons === */
+    .login-btn, .google-btn, .signup-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-btn {
+      background: #1DB954;
+      color: #000;
+      box-shadow: 0 0 20px rgba(30, 215, 96, 0.7);
+    }
+
+    .login-btn:hover {
+      background: #00cc77;
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0, 255, 150, 0.9);
+    }
+
+    .google-btn {
+      background: #4285F4;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(66, 133, 244, 0.6);
+    }
+
+    .google-btn:hover {
+      background: #357ae8;
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(66, 133, 244, 0.9);
+    }
+
+    .signup-btn {
+      background: #fff;
+      color: #1DB954;
+      font-weight: 600;
+      box-shadow: 0 0 15px rgba(30, 215, 96, 0.4);
+    }
+
+    .signup-btn:hover {
+      background: #f0f0f0;
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(30, 215, 96, 0.7);
+    }
+
+    /* === Bubbles Animation === */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(0, 255, 128, 0.3);
+      box-shadow: 0 0 20px rgba(0, 255, 128, 0.6);
+      animation: floatUp linear infinite;
+      bottom: -150px;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-120vh) scale(1.2) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media(max-width: 500px){
+      .login-box {
+        width: 90%;
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating bubbles -->
+  <div class="bubble" style="width:40px; height:40px; left:10%; animation-duration:12s;"></div>
+  <div class="bubble" style="width:25px; height:25px; left:25%; animation-duration:15s;"></div>
+  <div class="bubble" style="width:50px; height:50px; left:40%; animation-duration:18s;"></div>
+  <div class="bubble" style="width:20px; height:20px; left:60%; animation-duration:14s;"></div>
+  <div class="bubble" style="width:35px; height:35px; left:75%; animation-duration:20s;"></div>
+  <div class="bubble" style="width:45px; height:45px; left:85%; animation-duration:22s;"></div>
+
+  <!-- Login Box -->
+  <div class="login-box">
+    <h1>Login</h1>
+    <form id="login-form">
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter your username" required>
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+
+    <button id="google-login-btn" class="google-btn">Login with Google</button>
+    <button id="signup-btn" class="signup-btn">Sign Up</button>
+  </div>
+
+  <!-- Firebase & Working Authentication -->
+  <script>
+    console.log('🔐 Login page loaded');
+    
+    // Initialize demo accounts on first load
+    function initializeDemoAccounts() {
+      const users = JSON.parse(localStorage.getItem('musicAppUsers') || '[]');
+      if (users.length === 0) {
+        const demoUsers = [
+          { username: 'admin', password: 'admin', email: 'admin@musicapp.com', createdAt: new Date().toISOString() },
+          { username: 'user', password: 'pass', email: 'user@musicapp.com', createdAt: new Date().toISOString() }
+        ];
+        localStorage.setItem('musicAppUsers', JSON.stringify(demoUsers));
+        console.log('✅ Demo accounts created: admin/admin, user/pass');
+      }
+    }
+    
+    initializeDemoAccounts();
+
+    // Check if already logged in
+    const currentUser = localStorage.getItem('musicAppUser');
+    if (currentUser) {
+      const user = JSON.parse(currentUser);
+      console.log('✅ User already logged in:', user.username);
+      alert(`Welcome back, ${user.username}!`);
+      window.location.href = 'index.html';
+    }
+
+    // Traditional form login
+    const loginForm = document.getElementById("login-form");
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      
+      console.log('🔑 Attempting login:', username);
+
+      // Get all users from localStorage
+      const users = JSON.parse(localStorage.getItem('musicAppUsers') || '[]');
+      const user = users.find(u => u.username === username);
+
+      if (user && user.password === password) {
+        // Successful login
+        console.log('✅ Login successful!');
+        const userData = {
+          username: user.username,
+          email: user.email,
+          loginTime: new Date().toISOString()
+        };
+        localStorage.setItem('musicAppUser', JSON.stringify(userData));
+        alert(`Welcome back, ${username}! 🎉`);
+        window.location.href = "index.html";
+      } else if (!user) {
+        console.log('❌ User not found');
+        alert('Account not found! Try: admin/admin or user/pass\n\nOr create a new account!');
+      } else {
+        console.log('❌ Wrong password');
+        alert('Incorrect password! Try again.');
+      }
+    });
+
+    // Google Sign-In Button - Creates account instantly
+    const googleLoginBtn = document.getElementById("google-login-btn");
+    googleLoginBtn.addEventListener("click", () => {
+      const randomName = 'User' + Math.floor(Math.random() * 10000);
+      console.log('📧 Google login simulation:', randomName);
+      
+      const userData = {
+        username: randomName,
+        email: `${randomName}@gmail.com`,
+        loginTime: new Date().toISOString(),
+        provider: 'google'
+      };
+      
+      localStorage.setItem('musicAppUser', JSON.stringify(userData));
+      alert(`Welcome ${randomName}! (Google Auth Simulated)`);
+      window.location.href = "index.html";
+    });
+
+    // Sign Up Button - Create new account
+    const signupBtn = document.getElementById("signup-btn");
+    signupBtn.addEventListener("click", () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || username.length < 3) {
+        alert('Please enter a username (min 3 characters) in the form above!');
+        return;
+      }
+
+      if (!password || password.length < 4) {
+        alert('Please enter a password (min 4 characters) in the form above!');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('musicAppUsers') || '[]');
+      
+      // Check if username exists
+      if (users.find(u => u.username === username)) {
+        alert('Username already taken! Try another one.');
+        return;
+      }
+
+      // Create new account
+      const newUser = {
+        username: username,
+        password: password,
+        email: `${username}@musicapp.com`,
+        createdAt: new Date().toISOString()
+      };
+
+      users.push(newUser);
+      localStorage.setItem('musicAppUsers', JSON.stringify(users));
+      
+      console.log('✅ Account created:', username);
+      
+      // Auto-login
+      localStorage.setItem('musicAppUser', JSON.stringify({
+        username: newUser.username,
+        email: newUser.email,
+        loginTime: new Date().toISOString()
+      }));
+      
+      alert(`Account created successfully!\nWelcome ${username}! 🎉`);
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

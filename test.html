@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Connection Test</title>
+    <style>
+        body { background: #121212; color: white; font-family: Arial; padding: 50px; }
+        .status { padding: 20px; margin: 20px 0; border-radius: 10px; }
+        .success { background: #1db954; }
+        .error { background: #e22134; }
+        .loading { background: #535353; }
+        button { padding: 15px 30px; font-size: 16px; cursor: pointer; background: #1db954; color: white; border: none; border-radius: 5px; }
+        pre { background: #282828; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Music App Connection Test</h1>
+    
+    <div id="status" class="status loading">⏳ Testing connection...</div>
+    
+    <button onclick="testConnection()">🔄 Test Again</button>
+    
+    <h2>Results:</h2>
+    <pre id="results">Click the test button...</pre>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:5000';
+        
+        async function testConnection() {
+            const resultsEl = document.getElementById('results');
+            const statusEl = document.getElementById('status');
+            
+            statusEl.className = 'status loading';
+            statusEl.textContent = '⏳ Testing connection...';
+            
+            let results = '=== CONNECTION TEST RESULTS ===\n\n';
+            
+            try {
+                // Test Songs API
+                results += '1. Testing /songs endpoint...\n';
+                const songsRes = await fetch(`${API_BASE}/songs`);
+                results += `   Status: ${songsRes.status}\n`;
+                
+                if (songsRes.ok) {
+                    const songs = await songsRes.json();
+                    results += `   ✅ SUCCESS: Received ${songs.length} songs\n`;
+                    if (songs.length > 0) {
+                        results += `   First song: ${songs[0].title}\n`;
+                        results += `   Audio URL: ${songs[0].audioUrl}\n`;
+                        results += `   Cover URL: ${songs[0].coverUrl}\n`;
+                    }
+                } else {
+                    results += `   ❌ FAILED: HTTP ${songsRes.status}\n`;
+                }
+                
+                results += '\n2. Testing /artists endpoint...\n';
+                const artistsRes = await fetch(`${API_BASE}/artists`);
+                results += `   Status: ${artistsRes.status}\n`;
+                
+                if (artistsRes.ok) {
+                    const artists = await artistsRes.json();
+                    results += `   ✅ SUCCESS: Received ${artists.length} artists\n`;
+                    if (artists.length > 0) {
+                        results += `   First artist: ${artists[0].name}\n`;
+                    }
+                } else {
+                    results += `   ❌ FAILED: HTTP ${artistsRes.status}\n`;
+                }
+                
+                statusEl.className = 'status success';
+                statusEl.textContent = '✅ Connection successful! API is working.';
+                
+            } catch (err) {
+                results += `\n❌ ERROR: ${err.message}\n`;
+                results += '\nPossible causes:\n';
+                results += '- Backend server not running (run: npm run dev)\n';
+                results += '- Wrong port number\n';
+                results += '- CORS issues\n';
+                
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Connection failed! Check backend server.';
+            }
+            
+            resultsEl.textContent = results;
+        }
+        
+        // Run test automatically on page load
+        window.addEventListener('DOMContentLoaded', testConnection);
+    </script>
+</body>
+</html>

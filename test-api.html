@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+    <style>
+        body { background: #121212; color: white; font-family: Arial; padding: 20px; }
+        .success { color: #1db954; }
+        .error { color: #e22134; }
+        pre { background: #282828; padding: 10px; border-radius: 5px; max-height: 400px; overflow: auto; }
+        button { padding: 10px 20px; background: #1db954; border: none; color: black; cursor: pointer; border-radius: 5px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Quick API Test</h1>
+    <button onclick="testSongs()">Test /songs</button>
+    <button onclick="testArtists()">Test /artists</button>
+    <button onclick="testBackend()">Test Backend</button>
+    <div id="results"></div>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:5000';
+
+        async function testBackend() {
+            const resultsDiv = document.getElementById('results');
+            try {
+                const res = await fetch(`${API_BASE}/songs`);
+                resultsDiv.innerHTML = `<h2 class="success">✅ Backend is WORKING!</h2>
+                    <p>Status: ${res.status}</p>
+                    <p>Now check: http://127.0.0.1:5500/index.html</p>`;
+            } catch(err) {
+                resultsDiv.innerHTML = `<h2 class="error">❌ Backend NOT responding!</h2>
+                    <p>Error: ${err.message}</p>
+                    <p>Solution: Run <code>npm run dev</code> in terminal</p>`;
+            }
+        }
+
+        async function testSongs() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Loading...</p>';
+            try {
+                const res = await fetch(`${API_BASE}/songs`);
+                const songs = await res.json();
+                resultsDiv.innerHTML = `<h2 class="success">✅ Songs API Working!</h2>
+                    <p>Found: ${songs.length} songs</p>
+                    <h3>First 3 songs:</h3>
+                    <pre>${JSON.stringify(songs.slice(0, 3), null, 2)}</pre>`;
+            } catch(err) {
+                resultsDiv.innerHTML = `<h2 class="error">❌ Error: ${err.message}</h2>`;
+            }
+        }
+
+        async function testArtists() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Loading...</p>';
+            try {
+                const res = await fetch(`${API_BASE}/artists`);
+                const artists = await res.json();
+                resultsDiv.innerHTML = `<h2 class="success">✅ Artists API Working!</h2>
+                    <p>Found: ${artists.length} artists</p>
+                    <pre>${JSON.stringify(artists, null, 2)}</pre>`;
+            } catch(err) {
+                resultsDiv.innerHTML = `<h2 class="error">❌ Error: ${err.message}</h2>`;
+            }
+        }
+
+        // Auto-test on load
+        testBackend();
+    </script>
+</body>
+</html>
