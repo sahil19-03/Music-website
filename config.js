@@ -7,5 +7,5 @@
     }
 
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    window.API_BASE = isLocal ? 'http://127.0.0.1:5000' : 'https://YOUR_RENDER_URL';
+    window.API_BASE = isLocal ? 'http://127.0.0.1:5000' : 'https://music-website-iucn.onrender.com';
 })();
