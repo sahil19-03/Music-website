@@ -102,8 +102,9 @@
     <p class="footer-bottom">© 2025 AB</p>
   </footer>
 
+  <script src="config.js"></script>
   <script>
-    const API_BASE = 'http://127.0.0.1:5000';
+    const API_BASE = window.API_BASE || 'http://127.0.0.1:5000';
 
     document.addEventListener("DOMContentLoaded", async () => {
       console.log('🎵 clickedsongs.html loaded');

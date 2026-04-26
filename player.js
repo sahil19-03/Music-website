@@ -3,9 +3,9 @@ let currentSongId = null;
 let isPlaying = false;
 
 // Dynamic API Base URL - works for both local and production
-const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+const API_BASE = window.API_BASE || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://127.0.0.1:5000'
-    : ''; // Empty string uses same domain in production
+    : ''); // Empty string uses same domain in production
 
 // State Management with localStorage
 

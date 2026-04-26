@@ -1,5 +1,5 @@
 // Dynamic API Base URL - works for both local and production
-const API_BASE = 'http://127.0.0.1:5000';
+const API_BASE = window.API_BASE || 'http://127.0.0.1:5000';
 
 console.log('🎤 Artist page loaded! API_BASE:', API_BASE);
 
