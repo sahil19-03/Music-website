@@ -19,6 +19,7 @@ const songSchema = new mongoose.Schema({
     artistName: String,
     audioUrl: { type: String, required: true },
     coverUrl: { type: String, required: true },
+    playCount: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now }
 });
 
