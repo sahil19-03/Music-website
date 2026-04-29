@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cloudinary = require("cloudinary").v2;
@@ -11,6 +12,9 @@ const Artist = require('./models/Artist');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static frontend
+app.use(express.static(path.join(__dirname)));
 
 // ===================
 // Database Connection
@@ -119,6 +123,11 @@ app.post("/songs/:songId/play", async (req, res) => {
         console.error("❌ Error updating play count:", err);
         res.status(500).json({ error: "Could not update play count." });
     }
+});
+
+// Frontend fallback
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // ===================
