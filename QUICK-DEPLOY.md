@@ -45,9 +45,9 @@
 
 4. **Add Environment Variables** (click "Advanced"):
    ```
-   CLOUDINARY_CLOUD_NAME=drqlqaevt
-   CLOUDINARY_API_KEY=984526754273397
-   CLOUDINARY_API_SECRET=uAjfon2Pcpn3BI_sFwicHBOkOoU
+   CLOUDINARY_CLOUD_NAME=your_cloud_name_here
+   CLOUDINARY_API_KEY=your_api_key_here
+   CLOUDINARY_API_SECRET=your_api_secret_here
    MONGO_URI=your_mongodb_atlas_connection_string_here
    PORT=5000
    ```

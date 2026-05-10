@@ -19,7 +19,8 @@ app.use(express.static(path.join(__dirname)));
 // ===================
 // Database Connection
 // ===================
-mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/musicapp")
+const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/musicapp";
+mongoose.connect(mongoUri)
     .then(() => console.log("✅ MongoDB connected"))
     .catch(err => console.error(err));
 

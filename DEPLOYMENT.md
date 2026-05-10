@@ -73,9 +73,9 @@ app.use(cors({
 
 5. **Add Environment Variables** in Render dashboard:
    ```
-   CLOUDINARY_CLOUD_NAME=drqlqaevt
-   CLOUDINARY_API_KEY=984526754273397
-   CLOUDINARY_API_SECRET=uAjfon2Pcpn3BI_sFwicHBOkOoU
+   CLOUDINARY_CLOUD_NAME=your_cloud_name_here
+   CLOUDINARY_API_KEY=your_api_key_here
+   CLOUDINARY_API_SECRET=your_api_secret_here
    MONGO_URI=your_mongodb_atlas_connection_string
    PORT=5000
    NODE_ENV=production
@@ -296,10 +296,10 @@ app.use(cors({
 
 Required for production:
 ```env
-CLOUDINARY_CLOUD_NAME=drqlqaevt
-CLOUDINARY_API_KEY=984526754273397
-CLOUDINARY_API_SECRET=uAjfon2Pcpn3BI_sFwicHBOkOoU
-MONGO_URI=mongodb+srv://user:pass@cluster.mongodb.net/musicapp
+CLOUDINARY_CLOUD_NAME=your_cloud_name_here
+CLOUDINARY_API_KEY=your_api_key_here
+CLOUDINARY_API_SECRET=your_api_secret_here
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/musicapp
 PORT=5000
 NODE_ENV=production
 ```
